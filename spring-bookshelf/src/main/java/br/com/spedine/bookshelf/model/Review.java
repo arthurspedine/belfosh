@@ -1,9 +1,17 @@
 package br.com.spedine.bookshelf.model;
 
-import java.util.Date;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "reviews")
 public class Review {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
     private Book book; //ManyToOne
-    private String description;
-    private Date reviewDate ;
+    @Column(nullable = false)
+    private String comment;
+//    private Date reviewDate; // ADD LATER
+    private Double rating;
 }
