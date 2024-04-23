@@ -1,5 +1,6 @@
 package br.com.spedine.bookshelf.model;
 
+import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.repository.BookRepository;
 import br.com.spedine.bookshelf.service.DataConverter;
@@ -20,9 +21,13 @@ public class BookService {
 
     public List<BookJSONDTO> getAllJsonBooksFromName(String name) {
         ItemsData data = dataConverter.getData(RequestAPI.getJsonData(name), ItemsData.class);
-        data.items().forEach(System.out::println);
         return data.items().stream()
-                .filter(v -> v != null && v.volumeInfo().imageLinks() != null && v.volumeInfo().authors() != null && !v.volumeInfo().authors().isEmpty())
+                .filter(v -> v != null &&
+                        v.volumeInfo().imageLinks() != null &&
+                        v.volumeInfo().authors() != null &&
+                        !v.volumeInfo().authors().isEmpty() &&
+                        v.volumeInfo().publishedDate() != null &&
+                        v.volumeInfo().plot() != null)
                 .map(v -> new BookJSONDTO(
                         v.id(),
                         v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
@@ -38,6 +43,10 @@ public class BookService {
         } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
+    }
+
+    public List<BookDTO> getAllSelfBookshelf() {
+        return null;
     }
 
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
