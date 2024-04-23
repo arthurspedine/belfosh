@@ -12,13 +12,14 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    private String name;
-    private Date yearRealeased;
+    private String title;
+    private String publishedDate;
+    private String publisher;
     private String plot;
     private Integer totalPages;
-    private Double rating;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> userReview; // OneToMany
     @ManyToOne
     private Author author; // ManyToOne
+    private String poster;
 }

@@ -1,7 +1,7 @@
 package br.com.spedine.bookshelf.dto;
 
-public record BookDTO(
-        Long id,
+public record BookJSONDTO(
+        String id,
         String title,
         String publishedDate,
         String publisher,
