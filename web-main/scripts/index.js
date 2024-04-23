@@ -10,6 +10,7 @@ const bookTitle = params.get('name');
 
 function createBooksList(element, data) {
     const ulExist = element.querySelector('ul');
+    element.classList.remove('hidden');
 
     if (ulExist) {
         element.removeChild(ulExist);

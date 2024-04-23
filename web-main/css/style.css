@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    height: 100vh;
+    background-color: #D1E2F0;
+}
+
+.hidden {
+    display: none;
+}
+/* HEADER */
+header {
+    padding: 15px 22px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #10567E;
+    max-height: 70px;
+}
+
+header h1 {
+    position: absolute;
+    top: 10px;
+    color: #D1E2F0;
+}
+
+form {
+    display: flex;
+    gap: 3px;
+    margin: auto;
+}
+
+form #name {
+    width: 250px;
+    height: 40px;
+    border: 2px solid black;
+    font-size: 1rem;
+    padding: 10px;
+}
+
+form .btn {
+    background-color: #10567E;
+    border: none;
+    cursor: pointer;
+}
+
+.btn img {
+    width: 40px;
+}
+/* SEARCH RESULT */
+
+section h2 {
+    font-size: 1.6rem;
+}
+
+.section {
+    padding: 10px 3em;
+}
+
+.section ul {
+    padding: 20px;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.section ul li {
+    transition: transform 0.3s ease;
+    transform-origin: center;
+}
+
+.section ul li:hover {
+    transform: scale(1.15);
+}
+
+.section ul li a img {
+    width: 130px;
+    box-shadow: 0 5px 15px black;
+}
