@@ -13,7 +13,7 @@ public record BookData(
         String publisher,
         String publishedDate,
         @JsonAlias("description")
-        String plot,
+        String summary,
         @JsonAlias("pageCount")
         Integer totalPages,
         @JsonAlias("imageLinks")

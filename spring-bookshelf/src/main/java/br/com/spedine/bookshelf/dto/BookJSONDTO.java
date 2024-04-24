@@ -5,7 +5,7 @@ public record BookJSONDTO(
         String title,
         String publishedDate,
         String publisher,
-        String plot,
+        String summary,
         Integer totalPages,
         String author,
         String poster_url

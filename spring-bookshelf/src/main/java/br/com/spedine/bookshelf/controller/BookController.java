@@ -4,10 +4,9 @@ import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.model.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +29,11 @@ public class BookController {
     @GetMapping("/self/all")
     public List<BookDTO> getAllSelfBookshelf() {
         return service.getAllSelfBookshelf();
+    }
+
+    @PostMapping(path = "/self/add", consumes = {"application/json"})
+    public ResponseEntity<Void> addBook(@RequestBody BookJSONDTO bookJSONDTO) {
+        service.saveBook(bookJSONDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

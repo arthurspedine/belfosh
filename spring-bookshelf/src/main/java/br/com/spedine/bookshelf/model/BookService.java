@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class BookService {
@@ -27,11 +26,11 @@ public class BookService {
                         v.volumeInfo().authors() != null &&
                         !v.volumeInfo().authors().isEmpty() &&
                         v.volumeInfo().publishedDate() != null &&
-                        v.volumeInfo().plot() != null)
+                        v.volumeInfo().summary() != null)
                 .map(v -> new BookJSONDTO(
                         v.id(),
                         v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
-                        v.volumeInfo().plot(), v.volumeInfo().totalPages(),
+                        v.volumeInfo().summary(), v.volumeInfo().totalPages(),
                         v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail")
                 )).toList();
     }
@@ -49,10 +48,19 @@ public class BookService {
         return null;
     }
 
+    public void saveBook(BookJSONDTO bookJSONDTO) {
+//        BookJSONDTO bookJSONDTO = dataConverter.getData(json, BookJSONDTO.class);
+        Book book = new Book(bookJSONDTO);
+        repository.save(book);
+    }
+//    public void saveBook(BookJSONDTO b) {
+//        System.out.println(b);
+//    }
+
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
         return new BookJSONDTO(v.id(),
                 v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
-                v.volumeInfo().plot(), v.volumeInfo().totalPages(),
+                v.volumeInfo().summary(), v.volumeInfo().totalPages(),
                 v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail"));
     }
 }

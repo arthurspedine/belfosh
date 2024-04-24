@@ -1,6 +1,8 @@
 package br.com.spedine.bookshelf.model;
 
+import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -15,11 +17,23 @@ public class Book {
     private String title;
     private String publishedDate;
     private String publisher;
-    private String plot;
+    private String summary;
     private Integer totalPages;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> userReview; // OneToMany
-    @ManyToOne
-    private Author author; // ManyToOne
-    private String poster;
+//    private Author author; // ManyToOne
+    private String author;
+    private String poster_url;
+
+    public Book() {}
+
+    public Book(BookJSONDTO b) {
+        this.title = b.title();
+        this.publishedDate = b.publishedDate();
+        this.publisher = b.publisher();
+        this.summary = b.summary();
+        this.totalPages = b.totalPages();
+        this.author = b.author();
+        this.poster_url = b.poster_url();
+    }
 }
