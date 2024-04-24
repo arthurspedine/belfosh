@@ -27,13 +27,15 @@ public class Book {
 
     public Book() {}
 
-    public Book(BookJSONDTO b) {
-        this.title = b.title();
-        this.publishedDate = b.publishedDate();
-        this.publisher = b.publisher();
-        this.summary = b.summary();
-        this.totalPages = b.totalPages();
-        this.author = b.author();
-        this.poster_url = b.poster_url();
+
+    public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, String author, String poster_url) {
+        this.title = title;
+        this.publishedDate = publishedDate;
+        this.publisher = publisher;
+        this.summary = summary;
+        this.totalPages = totalPages;
+        this.author = author;
+        this.poster_url = poster_url;
     }
+
 }

@@ -1,5 +1,7 @@
 package br.com.spedine.bookshelf.dto;
 
+import br.com.spedine.bookshelf.model.Book;
+
 public record BookJSONDTO(
         String id,
         String title,
@@ -10,4 +12,7 @@ public record BookJSONDTO(
         String author,
         String poster_url
 ) {
+    public Book getAs(){
+        return new Book( title,  publishedDate,  publisher,  summary,  totalPages, author, poster_url);
+    }
 }

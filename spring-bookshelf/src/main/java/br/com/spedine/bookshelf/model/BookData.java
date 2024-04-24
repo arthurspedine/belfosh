@@ -16,7 +16,6 @@ public record BookData(
         String summary,
         @JsonAlias("pageCount")
         Integer totalPages,
-        @JsonAlias("imageLinks")
         HashMap<String, String> imageLinks
 ) {
 }

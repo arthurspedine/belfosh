@@ -2,6 +2,7 @@ package br.com.spedine.bookshelf.controller;
 
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
+import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,7 @@ public class BookController {
     }
 
     @PostMapping(path = "/self/add", consumes = {"application/json"})
-    public ResponseEntity<Void> addBook(@RequestBody BookJSONDTO bookJSONDTO) {
-        service.saveBook(bookJSONDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Book> addBook(@RequestBody BookJSONDTO bookJSONDTO) {
+        return ResponseEntity.ok(service.saveBook(bookJSONDTO.getAs()));
     }
 }

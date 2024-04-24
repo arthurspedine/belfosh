@@ -48,14 +48,9 @@ public class BookService {
         return null;
     }
 
-    public void saveBook(BookJSONDTO bookJSONDTO) {
-//        BookJSONDTO bookJSONDTO = dataConverter.getData(json, BookJSONDTO.class);
-        Book book = new Book(bookJSONDTO);
-        repository.save(book);
+    public Book saveBook(Book book) {
+        return repository.save(book);
     }
-//    public void saveBook(BookJSONDTO b) {
-//        System.out.println(b);
-//    }
 
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
         return new BookJSONDTO(v.id(),
