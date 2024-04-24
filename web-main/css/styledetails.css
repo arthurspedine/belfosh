@@ -32,6 +32,22 @@ header img {
 main {
     padding: 10px 6%;
 }
-section {
-    padding: 10px 40px;
+
+.container {
+    padding: 10px 0;
+}
+
+#book-sheet {
+    width: 80%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
+    gap: 100px;
+}
+
+#book-sheet div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
