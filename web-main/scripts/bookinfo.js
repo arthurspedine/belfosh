@@ -47,9 +47,12 @@ function sendDataToServer() {
     postData("/books/self/add", current_book)
         .then(response => {
             console.log('Data sent successfully:', response);
+            window.location.href = "index.html";
+            alert("Book added!")
         })
-        window.location.href = "index.html";
-        alert("Book added!")
+        .catch(error => {
+            throw new Error('Error sending data to the server:', error);
+        });
 }
 
 loadBookSheet();
