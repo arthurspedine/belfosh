@@ -53,6 +53,10 @@ public class BookService {
         return repository.save(book);
     }
 
+    public List<String> getAllAuthors() {
+        return repository.findAllAuthors();
+    }
+
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
         return new BookJSONDTO(v.id(),
                 v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),

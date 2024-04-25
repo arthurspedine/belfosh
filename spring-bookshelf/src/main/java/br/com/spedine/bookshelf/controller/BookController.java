@@ -36,4 +36,9 @@ public class BookController {
     public ResponseEntity<Book> addBook(@RequestBody BookJSONDTO bookJSONDTO) {
         return ResponseEntity.ok(service.saveBook(bookJSONDTO.getAs()));
     }
+
+    @GetMapping("/self/all/authors")
+    public List<String> getAllAuthors() {
+        return service.getAllAuthors();
+    }
 }
