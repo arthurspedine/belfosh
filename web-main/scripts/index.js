@@ -2,7 +2,8 @@ import getData from "./getData.js";
 
 const elements = {
     myshelf: document.querySelector('[data-name="myshelf"]'),
-    search: document.querySelector('[data-name="search"]')
+    search: document.querySelector('[data-name="search"]'),
+    selectElement: document.querySelector('[data-author]')
 };
 
 const params = new URLSearchParams(window.location.search);
@@ -30,8 +31,9 @@ function createSearchBookList(element, data) {
 }
 
 function createSelfBooksList(element, data) {
-    const ulExist = element.querySelector('ul');
 
+    const ulExist = element.querySelector('ul');
+    getAuthors();
     if (ulExist) {
         element.removeChild(ulExist);
     }
@@ -71,5 +73,32 @@ function generateBooks() {
         .catch(error => {
             console.error("Error to get shelf data: ", error);
         })
+}
 
+function getAuthors() {
+    const url = "/books/self/all/authors";
+    getData(url)
+        .then(data => {
+            console.log(`Authors: ${data}`);
+            generateAuthorsOption(elements.selectElement, data)
+        })
+        .catch(error => {
+            console.error("Error to get shelf data: ", error);
+        })
+}
+
+function generateAuthorsOption(element, data) {
+    element.classList.remove("hidden");
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = "all";
+    defaultOption.textContent = "All Books";
+    element.appendChild(defaultOption);
+
+    data.forEach(author => {
+        const option = document.createElement('option');
+        option.value = author;
+        option.textContent = author;
+        element.appendChild(option);
+    });
 }
