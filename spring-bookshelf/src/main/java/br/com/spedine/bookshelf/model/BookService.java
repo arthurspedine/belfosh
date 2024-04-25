@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -45,7 +46,7 @@ public class BookService {
     }
 
     public List<BookDTO> getAllSelfBookshelf() {
-        return null;
+        return convertToBookDTO(repository.findAll());
     }
 
     public Book saveBook(Book book) {
@@ -57,5 +58,14 @@ public class BookService {
                 v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
                 v.volumeInfo().summary(), v.volumeInfo().totalPages(),
                 v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail"));
+    }
+
+    private List<BookDTO> convertToBookDTO(List<Book> all) {
+        return all.stream()
+                .map(b -> new BookDTO(
+                        b.getId(), b.getTitle(), b.getPublishedDate(),
+                        b.getPublisher(), b.getSummary(), b.getTotalPages(),
+                        b.getAuthor(), b.getPoster_url()
+                )).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,6 @@
 package br.com.spedine.bookshelf.dto;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import br.com.spedine.bookshelf.model.Book;
 
 public record BookDTO(
         Long id,

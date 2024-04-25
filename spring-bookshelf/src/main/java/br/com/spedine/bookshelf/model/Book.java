@@ -27,7 +27,6 @@ public class Book {
 
     public Book() {}
 
-
     public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, String author, String poster_url) {
         this.title = title;
         this.publishedDate = publishedDate;
@@ -38,4 +37,39 @@ public class Book {
         this.poster_url = poster_url;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getPublishedDate() {
+        return publishedDate;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public Integer getTotalPages() {
+        return totalPages;
+    }
+
+    public List<Review> getUserReview() {
+        return userReview;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPoster_url() {
+        return poster_url;
+    }
 }
