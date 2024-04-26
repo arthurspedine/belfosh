@@ -54,6 +54,13 @@ main {
     gap: 10px;
 }
 
+/* REVIEW SECTION */
+
+.review {
+    display: flex;
+    flex-direction: column;
+}
+
 button {
     display: block;
     margin: 20px auto;

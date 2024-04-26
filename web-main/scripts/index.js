@@ -66,7 +66,7 @@ function createSelfBooksList(element, data) {
 }
 
 function getAuthors() {
-    const url = "/books/self/authors";
+    const url = "/books/self/author/all";
     getData(url)
         .then(data => {
             console.log(`Authors: ${data}`);

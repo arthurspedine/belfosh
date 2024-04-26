@@ -28,4 +28,15 @@ function loadBookSheet() {
         });
 }
 
+function loadReviews() {
+    getData(`/books/self/${id}/reviews`)
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("Error to get the reviews list: ", error);
+        })
+}
+
 loadBookSheet();
+loadReviews();
