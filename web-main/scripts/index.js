@@ -6,6 +6,8 @@ const elements = {
     selectElement: document.querySelector('[data-author]')
 };
 
+elements.search.style.padding = '0'; // DISABLE PADDING TO DONT MOVE SHELF
+
 const params = new URLSearchParams(window.location.search);
 const bookTitle = params.get('name');
 
@@ -13,6 +15,9 @@ function createSearchBookList(element, data) {
     if (data.length == null) {
         return;
     }
+
+    elements.search.style.padding = '10px 3em'; // APPLY PADDING
+
     const ulExist = element.querySelector('ul');
     const h2Exist = element.querySelector('h2');
 
@@ -22,7 +27,7 @@ function createSearchBookList(element, data) {
     if (h2Exist) {
         element.removeChild(h2Exist);
     }
-    
+
     const h2 = document.createElement('h2');
     h2.textContent = "Search Result";
     element.appendChild(h2);
@@ -99,6 +104,11 @@ elements.selectElement.addEventListener('change', function () {
         
         for (const element of elementsToHide) {
             element.classList.remove('hidden');
+        }
+        if (elements.search.children.length > 0) { // CHECK IF HAS ANY CHILDREN FROM SEARCH
+            elements.search.style.padding = '10px 3em'; // APPLY PADDING
+        } else {
+            elements.search.style.padding = '0px'; // DISABLE PADDING TO DONT MOVE SHELF
         }
         sectionAuthor.classList.add('hidden');
 

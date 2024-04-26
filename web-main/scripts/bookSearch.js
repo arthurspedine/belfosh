@@ -39,6 +39,7 @@ document.getElementById("addBookToShelf").addEventListener("click", function() {
         console.log("Current Book:", current_book);
         sendDataToServer();
     } else {
+        alert("No book data available.")
         console.error("No book data available.");
     }
 });
