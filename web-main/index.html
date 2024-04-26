@@ -11,16 +11,19 @@
         <header>
             <h1>Spring Web Bookshelf</h1>
             <form action="">
-                <input type="text" name="name" id="name" placeholder="Enter a book name"><br>
+                <input type="text" name="name" id="name" placeholder="Enter a book name">
                 <button type="submit" class="btn"><img src="img/search.png" alt=""></button>
             </form>
         </header>
-        <section data-name="search" class="hidden section">
+        <section class="hidden section" id="search">
             <h2>Search Result</h2>
+            <section data-name="search" class="book-list"></section>
         </section>
-        <section data-name="myshelf" class="section">
+        <section class="section">
             <h2>My personal shelf</h2>
             <select data-author class="hidden"></select>
+            <section data-name="myshelf" class="book-list"></section>
+            <section data-name="author"></section>
         </section>
     </main>
     <script src="./scripts/index.js" type="module"></script>

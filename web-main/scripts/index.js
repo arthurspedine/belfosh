@@ -10,8 +10,11 @@ const params = new URLSearchParams(window.location.search);
 const bookTitle = params.get('name');
 
 function createSearchBookList(element, data) {
+    if (data.length == null) {
+        return;
+    }
     const ulExist = element.querySelector('ul');
-    element.classList.remove('hidden');
+    document.getElementById("search").classList.remove('hidden');
 
     if (ulExist) {
         element.removeChild(ulExist);
@@ -21,7 +24,7 @@ function createSearchBookList(element, data) {
     ul.className = 'book-list';
     const listHTML = data.map(book => `
         <li>
-            <a href="/details.html?name=${book.title.replace(" ", "%20")}&id=${book.id}">
+            <a href="/search_details.html?name=${book.title.replace(" ", "%20")}&id=${book.id}">
                 <img src="${book.poster_url}" alt="${book.title}">
             </a>
         </li>
@@ -33,7 +36,6 @@ function createSearchBookList(element, data) {
 function createSelfBooksList(element, data) {
 
     const ulExist = element.querySelector('ul');
-    getAuthors();
     if (ulExist) {
         element.removeChild(ulExist);
     }
@@ -42,7 +44,7 @@ function createSelfBooksList(element, data) {
     ul.className = 'book-list';
     const listHTML = data.map(book => `
         <li>
-            <a href="/details.html&id=${book.id}">
+            <a href="/details.html?id=${book.id}">
                 <img src="${book.poster_url}" alt="${book.title}">
             </a>
         </li>
@@ -52,7 +54,7 @@ function createSelfBooksList(element, data) {
 }
 
 function getAuthors() {
-    const url = "/books/self/all/authors";
+    const url = "/books/self/authors";
     getData(url)
         .then(data => {
             console.log(`Authors: ${data}`);
@@ -73,17 +75,47 @@ function generateAuthorsOption(element, data) {
 
     data.forEach(author => {
         const option = document.createElement('option');
-        option.value = author;
-        option.textContent = author;
+        option.value = author.id;
+        option.textContent = author.name;
         element.appendChild(option);
     });
 }
 
+const elementsToHide = document.querySelectorAll('.book-list');
+
 elements.selectElement.addEventListener('change', function() {
-    category = document.querySelector('[data-name="myshelf"]');
+    const sectionAuthor = document.querySelector('[data-name="author"]');
+    const selectedAuthor = elements.selectElement.value;
+
+
+    if (selectedAuthor === "all") {
+        for (const element of elementsToHide) {
+            element.classList.remove('hidden');
+        }
+        sectionAuthor.classList.add('hidden');
+        document.getElementById("search").classList.remove('hidden'); // SEARCH RESULT
+    } else {
+
+        for (const element of elementsToHide) {
+            element.classList.add('hidden');
+        }
+        document.getElementById("search").classList.add('hidden'); // SEARCH RESULT
+        sectionAuthor.classList.remove('hidden');
+
+        getData(`/books/self/author/${selectedAuthor}`)
+            .then(data => {
+                createSelfBooksList(sectionAuthor, data);
+            })
+            .catch(error => {
+                console.error("Error to get books from author value: ", error);
+            })
+    }
+    
 });
 
+getAuthors(); // SELECT FROM SECTION MY SHELF
 generateBooks();
+
 function generateBooks() {
     if (bookTitle != null) {
         const url = `/books/${bookTitle}`;
