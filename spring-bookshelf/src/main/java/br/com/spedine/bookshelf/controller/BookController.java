@@ -1,5 +1,6 @@
 package br.com.spedine.bookshelf.controller;
 
+import br.com.spedine.bookshelf.dto.AuthorDTO;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.model.Book;
@@ -37,13 +38,26 @@ public class BookController {
         return ResponseEntity.ok(service.saveBook(bookJSONDTO.getAs(), bookJSONDTO.author()));
     }
 
-    @GetMapping("/self/all/authors")
-    public List<String> getAllAuthors() {
+    @GetMapping("/self/authors")
+    public List<AuthorDTO> getAllAuthors() {
         return service.getAllAuthors();
     }
 
-    @GetMapping("/self/author/{name}")
-    public String getAuthorByName(@PathVariable String name) {
-        return service.getAuthorByName(name);
+    @GetMapping("/self/author/{id}")
+    public ResponseEntity<List<BookDTO>> getAuthorByName(@PathVariable Long id) {
+        List<BookDTO> books = service.getBooksByAuthorId(id);
+        if (books.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/self/{id}")
+    public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
+        BookDTO book = service.getBookById(id);
+        if (book == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(book);
     }
 }
