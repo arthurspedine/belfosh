@@ -14,11 +14,18 @@ function createSearchBookList(element, data) {
         return;
     }
     const ulExist = element.querySelector('ul');
-    document.getElementById("search").classList.remove('hidden');
+    const h2Exist = element.querySelector('h2');
 
     if (ulExist) {
         element.removeChild(ulExist);
     }
+    if (h2Exist) {
+        element.removeChild(h2Exist);
+    }
+    
+    const h2 = document.createElement('h2');
+    h2.textContent = "Search Result";
+    element.appendChild(h2);
 
     const ul = document.createElement('ul');
     ul.className = 'book-list';
@@ -83,23 +90,22 @@ function generateAuthorsOption(element, data) {
 
 const elementsToHide = document.querySelectorAll('.book-list');
 
-elements.selectElement.addEventListener('change', function() {
+elements.selectElement.addEventListener('change', function () {
     const sectionAuthor = document.querySelector('[data-name="author"]');
     const selectedAuthor = elements.selectElement.value;
 
 
     if (selectedAuthor === "all") {
+        
         for (const element of elementsToHide) {
             element.classList.remove('hidden');
         }
         sectionAuthor.classList.add('hidden');
-        document.getElementById("search").classList.remove('hidden'); // SEARCH RESULT
-    } else {
 
+    } else {
         for (const element of elementsToHide) {
             element.classList.add('hidden');
         }
-        document.getElementById("search").classList.add('hidden'); // SEARCH RESULT
         sectionAuthor.classList.remove('hidden');
 
         getData(`/books/self/author/${selectedAuthor}`)
@@ -110,7 +116,7 @@ elements.selectElement.addEventListener('change', function() {
                 console.error("Error to get books from author value: ", error);
             })
     }
-    
+
 });
 
 getAuthors(); // SELECT FROM SECTION MY SHELF

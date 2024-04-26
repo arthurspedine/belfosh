@@ -21,7 +21,8 @@ header {
     max-height: 70px;
 }
 
-header h1 {
+header h1 a {
+    text-decoration: none;
     color: #D1E2F0;
 }
 
