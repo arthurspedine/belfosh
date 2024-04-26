@@ -10,6 +10,7 @@ import br.com.spedine.bookshelf.service.RequestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,14 +57,14 @@ public class BookService {
 
     public BookDTO saveBook(Book book, String authorName) {
         Author author = authorRepository.findByNameContainingIgnoreCase(authorName);
-        // DEBUG HERE !
         if (author == null) {
             author = new Author();
             author.setName(authorName);
+            author.setBooksLaunched(new ArrayList<>());
+            authorRepository.save(author);
         }
         book.setAuthor(author);
         author.getBooksLaunched().add(book);
-        authorRepository.save(author);
         bookRepository.save(book);
         return convertToBookDTO(book);
     }
