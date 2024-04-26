@@ -1,5 +1,6 @@
 package br.com.spedine.bookshelf.dto;
 
+import br.com.spedine.bookshelf.model.Author;
 import br.com.spedine.bookshelf.model.Book;
 
 public record BookDTO(
@@ -9,7 +10,7 @@ public record BookDTO(
         String publisher,
         String summary,
         Integer totalPages,
-        String author,
+        AuthorDTO author,
         String poster_url
 ) {
 }

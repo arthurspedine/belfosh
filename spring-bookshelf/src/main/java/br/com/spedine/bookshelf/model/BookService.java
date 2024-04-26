@@ -1,7 +1,9 @@
 package br.com.spedine.bookshelf.model;
 
+import br.com.spedine.bookshelf.dto.AuthorDTO;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
+import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
 import br.com.spedine.bookshelf.service.DataConverter;
 import br.com.spedine.bookshelf.service.RequestAPI;
@@ -17,7 +19,10 @@ public class BookService {
     DataConverter dataConverter = new DataConverter();
 
     @Autowired
-    private BookRepository repository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     public List<BookJSONDTO> getAllJsonBooksFromName(String name) {
         ItemsData data = dataConverter.getData(RequestAPI.getJsonData(name), ItemsData.class);
@@ -46,15 +51,34 @@ public class BookService {
     }
 
     public List<BookDTO> getAllSelfBookshelf() {
-        return convertToBookDTO(repository.findAll());
+        return convertToBookDTOList(bookRepository.findAll());
     }
 
-    public Book saveBook(Book book) {
-        return repository.save(book);
+    public BookDTO saveBook(Book book, String authorName) {
+        Author author = authorRepository.findByNameContainingIgnoreCase(authorName);
+        // DEBUG HERE !
+        if (author == null) {
+            author = new Author();
+            author.setName(authorName);
+        }
+        book.setAuthor(author);
+        author.getBooksLaunched().add(book);
+        authorRepository.save(author);
+        bookRepository.save(book);
+        return convertToBookDTO(book);
     }
 
     public List<String> getAllAuthors() {
-        return repository.findAllAuthors();
+        return bookRepository.findAllAuthors();
+    }
+
+    public String getAuthorByName(String name) {
+        System.out.println(name);
+//        Optional<Book> book = repository.findByAuthorContainingIgnoreCase(name);
+//        if (book.isPresent()) {
+//            return book.get().getAuthor();
+//        }
+        return "There is not author with this name!";
     }
 
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
@@ -64,12 +88,22 @@ public class BookService {
                 v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail"));
     }
 
-    private List<BookDTO> convertToBookDTO(List<Book> all) {
+    private BookDTO convertToBookDTO(Book book) {
+        return new BookDTO(
+                book.getId(), book.getTitle(), book.getPublishedDate(),
+                book.getPublisher(), book.getSummary(), book.getTotalPages(),
+                new AuthorDTO(book.getAuthor().getId(), book.getAuthor().getName()),
+                book.getPoster_url()
+        );
+    }
+
+    private List<BookDTO> convertToBookDTOList(List<Book> all) {
         return all.stream()
                 .map(b -> new BookDTO(
                         b.getId(), b.getTitle(), b.getPublishedDate(),
                         b.getPublisher(), b.getSummary(), b.getTotalPages(),
-                        b.getAuthor(), b.getPoster_url()
+                        new AuthorDTO(b.getAuthor().getId(), b.getAuthor().getName()),
+                        b.getPoster_url()
                 )).collect(Collectors.toList());
     }
 }
