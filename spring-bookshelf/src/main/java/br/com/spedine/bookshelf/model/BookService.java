@@ -3,6 +3,7 @@ package br.com.spedine.bookshelf.model;
 import br.com.spedine.bookshelf.dto.AuthorDTO;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
+import br.com.spedine.bookshelf.dto.ReviewDTO;
 import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
 import br.com.spedine.bookshelf.service.DataConverter;
@@ -10,6 +11,7 @@ import br.com.spedine.bookshelf.service.RequestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,24 +86,33 @@ public class BookService {
 
     public BookDTO getBookById(Long id) {
         Optional<Book> book = bookRepository.findById(id);
+        return book.map(this::convertToBookDTO).orElse(null);
+    }
+
+    public List<ReviewDTO> getReviewsByBookId(Long id) {
+        List<Review> reviews = bookRepository.findReviewByBookId(id);
+        return convertToReviewDTOList(reviews);
+    }
+
+    public ReviewDTO saveReview(ReviewDTO r) {
+        Optional<Book> book = bookRepository.findById(r.book_id());
         if (book.isPresent()) {
-            return convertToBookDTO(book.get());
+            Review review = new Review(
+                    book.get(), r.comment(),
+                    r.rating(), LocalDate.now());
+            book.get().getUserReview().add(review);
+            bookRepository.save(book.get());
+            return convertToReviewDTO(review);
         }
         return null;
     }
 
+    // OBJECTS
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
         return new BookJSONDTO(v.id(),
                 v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
                 v.volumeInfo().summary(), v.volumeInfo().totalPages(),
                 v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail"));
-    }
-
-    private List<AuthorDTO> convertToAuthorDTOList(List<Author> all) {
-        return all.stream()
-                .map(a -> new AuthorDTO(
-                        a.getId(), a.getName()
-                )).collect(Collectors.toList());
     }
 
     private BookDTO convertToBookDTO(Book book) {
@@ -113,9 +124,31 @@ public class BookService {
         );
     }
 
+    private ReviewDTO convertToReviewDTO(Review review) {
+        return new ReviewDTO(
+                review.getId(), review.getComment(),
+                review.getRating(), review.getDatePublished(),
+                review.getBook().getId()
+        );
+    }
+
+    // LIST<OBJECTS>
+    private List<AuthorDTO> convertToAuthorDTOList(List<Author> all) {
+        return all.stream()
+                .map(a -> new AuthorDTO(
+                        a.getId(), a.getName()
+                )).collect(Collectors.toList());
+    }
+
     private List<BookDTO> convertToBookDTOList(List<Book> all) {
         return all.stream()
                 .map(this::convertToBookDTO
+                ).collect(Collectors.toList());
+    }
+
+    private List<ReviewDTO> convertToReviewDTOList(List<Review> all) {
+        return all.stream()
+                .map(this::convertToReviewDTO
                 ).collect(Collectors.toList());
     }
 }

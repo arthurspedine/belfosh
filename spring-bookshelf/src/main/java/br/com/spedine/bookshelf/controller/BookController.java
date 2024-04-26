@@ -3,8 +3,10 @@ package br.com.spedine.bookshelf.controller;
 import br.com.spedine.bookshelf.dto.AuthorDTO;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
+import br.com.spedine.bookshelf.dto.ReviewDTO;
 import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.BookService;
+import br.com.spedine.bookshelf.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class BookController {
         return ResponseEntity.ok(service.saveBook(bookJSONDTO.getAs(), bookJSONDTO.author()));
     }
 
-    @GetMapping("/self/authors")
+    @GetMapping("/self/author/all")
     public List<AuthorDTO> getAllAuthors() {
         return service.getAllAuthors();
     }
@@ -59,5 +61,19 @@ public class BookController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/self/{id}/reviews")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByBookId(@PathVariable Long id) {
+        List<ReviewDTO> reviews = service.getReviewsByBookId(id);
+        if (reviews.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(reviews);
+    }
+
+    @PostMapping(path = "/self/{id}/reviews/add", consumes = {"application/json"})
+    public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDTO) {
+        return ResponseEntity.ok(service.saveReview(reviewDTO));
     }
 }
