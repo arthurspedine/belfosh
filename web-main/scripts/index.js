@@ -51,30 +51,6 @@ function createSelfBooksList(element, data) {
     element.appendChild(ul);
 }
 
-generateBooks();
-function generateBooks() {
-    if (bookTitle != null) {
-        const url = `/books/${bookTitle}`;
-        getData(url)
-            .then(data => {
-                console.log(data);
-                createSearchBookList(elements.search, data);
-            })
-            .catch(error => {
-                console.error("Error to get search data: ", error);
-            })
-    }
-    const url = `/books/self/all`;
-    getData(url)
-        .then(data => {
-            console.log(`My shelf: ${data}`);
-            createSelfBooksList(elements.myshelf, data);
-        })
-        .catch(error => {
-            console.error("Error to get shelf data: ", error);
-        })
-}
-
 function getAuthors() {
     const url = "/books/self/all/authors";
     getData(url)
@@ -102,3 +78,32 @@ function generateAuthorsOption(element, data) {
         element.appendChild(option);
     });
 }
+
+elements.selectElement.addEventListener('change', function() {
+    category = document.querySelector('[data-name="myshelf"]');
+});
+
+generateBooks();
+function generateBooks() {
+    if (bookTitle != null) {
+        const url = `/books/${bookTitle}`;
+        getData(url)
+            .then(data => {
+                console.log(data);
+                createSearchBookList(elements.search, data);
+            })
+            .catch(error => {
+                console.error("Error to get search data: ", error);
+            })
+    }
+    const url = `/books/self/all`;
+    getData(url)
+        .then(data => {
+            console.log(`My shelf: ${data}`);
+            createSelfBooksList(elements.myshelf, data);
+        })
+        .catch(error => {
+            console.error("Error to get shelf data: ", error);
+        })
+}
+

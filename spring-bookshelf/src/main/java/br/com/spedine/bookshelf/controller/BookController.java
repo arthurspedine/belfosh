@@ -33,12 +33,17 @@ public class BookController {
     }
 
     @PostMapping(path = "/self/add", consumes = {"application/json"})
-    public ResponseEntity<Book> addBook(@RequestBody BookJSONDTO bookJSONDTO) {
-        return ResponseEntity.ok(service.saveBook(bookJSONDTO.getAs()));
+    public ResponseEntity<BookDTO> addBook(@RequestBody BookJSONDTO bookJSONDTO) {
+        return ResponseEntity.ok(service.saveBook(bookJSONDTO.getAs(), bookJSONDTO.author()));
     }
 
     @GetMapping("/self/all/authors")
     public List<String> getAllAuthors() {
         return service.getAllAuthors();
+    }
+
+    @GetMapping("/self/author/{name}")
+    public String getAuthorByName(@PathVariable String name) {
+        return service.getAuthorByName(name);
     }
 }

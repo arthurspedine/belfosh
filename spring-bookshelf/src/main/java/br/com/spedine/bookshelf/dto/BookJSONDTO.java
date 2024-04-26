@@ -13,8 +13,8 @@ public record BookJSONDTO(
         String poster_url
 ) {
     public Book getAs(){
-        return new Book(
+        return new Book( // without author
                 title, publishedDate, publisher, summary,
-                totalPages, author, poster_url);
+                totalPages, poster_url);
     }
 }

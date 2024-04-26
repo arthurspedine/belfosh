@@ -16,6 +16,10 @@ public class Author {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Book> booksLaunched = new ArrayList<>(); // OneToMany
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
