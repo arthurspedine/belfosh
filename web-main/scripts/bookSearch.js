@@ -7,13 +7,13 @@ const bookId = params.get('id');
 
 let current_book;
 
-const bookSheet = document.getElementById("book-sheet")
+const bookSheet = document.getElementById("book-sheet");
 
 function loadBookSheet() {
     getData(`/books/${bookTitle}/${bookId}`)
         .then(data => {
             bookSheet.innerHTML = `
-            <img src="${data.poster_url}" alt="${data.tile}" />
+            <img src="${data.poster_url}" alt="${data.title}" />
             <div>
                 <h2>${data.title}</h2>
                 <div class="plot-text">

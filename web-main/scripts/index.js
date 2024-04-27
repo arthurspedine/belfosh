@@ -101,7 +101,7 @@ elements.selectElement.addEventListener('change', function () {
 
 
     if (selectedAuthor === "all") {
-        
+
         for (const element of elementsToHide) {
             element.classList.remove('hidden');
         }
@@ -137,7 +137,6 @@ function generateBooks() {
         const url = `/books/${bookTitle}`;
         getData(url)
             .then(data => {
-                console.log(data);
                 createSearchBookList(elements.search, data);
             })
             .catch(error => {

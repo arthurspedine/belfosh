@@ -13,8 +13,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findBooksByAuthor(Author author);
 
-    @Query("select r from Book b join b.userReview r where r.id = :id")
+    @Query("select r from Book b join b.userReview r where r.book.id = :id")
     List<Review> findReviewByBookId(Long id);
 
-//    Optional<Book> findByAuthorContainingIgnoreCase(String author_name);
 }

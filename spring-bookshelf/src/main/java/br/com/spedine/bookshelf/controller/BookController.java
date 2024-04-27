@@ -72,7 +72,7 @@ public class BookController {
         return ResponseEntity.ok(reviews);
     }
 
-    @PostMapping(path = "/self/{id}/reviews/add", consumes = {"application/json"})
+    @PostMapping(path = "/self/reviews/add", consumes = {"application/json"})
     public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDTO) {
         return ResponseEntity.ok(service.saveReview(reviewDTO));
     }
