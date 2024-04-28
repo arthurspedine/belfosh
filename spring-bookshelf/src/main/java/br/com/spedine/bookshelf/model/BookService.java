@@ -107,13 +107,11 @@ public class BookService {
         return null;
     }
 
-    public BookDTO deleteBookById(Long id) {
+    public void deleteBookById(Long id) {
         Optional<Book> book = bookRepository.findById(id);
         if (book.isPresent()) {
             bookRepository.deleteBookById(id);
-            return convertToBookDTO(book.get());
-        } else {
-            return null;
+            convertToBookDTO(book.get());
         }
     }
 
