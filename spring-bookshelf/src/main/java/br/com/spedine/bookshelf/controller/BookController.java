@@ -4,11 +4,8 @@ import br.com.spedine.bookshelf.dto.AuthorDTO;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.dto.ReviewDTO;
-import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.BookService;
-import br.com.spedine.bookshelf.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,5 +72,11 @@ public class BookController {
     @PostMapping(path = "/self/reviews/add", consumes = {"application/json"})
     public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDTO) {
         return ResponseEntity.ok(service.saveReview(reviewDTO));
+    }
+
+    @DeleteMapping(path = "/self/{id}/delete")
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+        service.deleteBookById(id);
+        return ResponseEntity.ok("Book deleted successfully!");
     }
 }

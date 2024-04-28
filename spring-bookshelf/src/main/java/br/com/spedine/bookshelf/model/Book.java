@@ -20,11 +20,10 @@ public class Book {
     @Column(length = 2000)
     private String summary;
     private Integer totalPages;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> userReview; // OneToMany
     @ManyToOne
     private Author author; // ManyToOne
-//    private String author;
     private String poster_url;
 
     public Book() {}

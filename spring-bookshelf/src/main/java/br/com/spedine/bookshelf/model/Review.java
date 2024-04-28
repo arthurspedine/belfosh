@@ -11,8 +11,8 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book; //ManyToOne
-    @Column(nullable = false)
     private String comment;
     private Double rating;
     private LocalDate datePublished;

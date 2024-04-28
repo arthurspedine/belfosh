@@ -107,6 +107,16 @@ public class BookService {
         return null;
     }
 
+    public BookDTO deleteBookById(Long id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isPresent()) {
+            bookRepository.deleteBookById(id);
+            return convertToBookDTO(book.get());
+        } else {
+            return null;
+        }
+    }
+
     // OBJECTS
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
         return new BookJSONDTO(v.id(),

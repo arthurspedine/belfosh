@@ -1,4 +1,5 @@
 import getData from "./getData.js";
+import deleteData from "./deleteData.js";
 
 const elements = {
     myshelf: document.querySelector('[data-name="myshelf"]'),
@@ -55,10 +56,11 @@ function createSelfBooksList(element, data) {
     const ul = document.createElement('ul');
     ul.className = 'book-list';
     const listHTML = data.map(book => `
-        <li>
+        <li id="${book.id}">
             <a href="/details.html?id=${book.id}">
                 <img src="${book.poster_url}" alt="${book.title}">
             </a>
+            <button class="delete-btn" alt="Delete this book">✘</button>
         </li>
     `).join('');
     ul.innerHTML = listHTML;
@@ -127,6 +129,16 @@ elements.selectElement.addEventListener('change', function () {
             })
     }
 
+});
+
+
+elements.myshelf.addEventListener('click', function(event) {
+    if (event.target.classList.contains('delete-btn')) {
+        // get id from <li> father
+        const liId = event.target.parentElement.getAttribute('id');
+        console.log(liId);
+        deleteData(`/books/self/${liId}/delete`);
+    }
 });
 
 getAuthors(); // SELECT FROM SECTION MY SHELF
