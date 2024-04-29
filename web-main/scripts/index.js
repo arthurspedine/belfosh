@@ -136,7 +136,6 @@ elements.myshelf.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-btn')) {
         // get id from <li> father
         const liId = event.target.parentElement.getAttribute('id');
-        console.log(liId);
         deleteData(`/books/self/${liId}/delete`);
     }
 });

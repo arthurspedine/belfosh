@@ -111,7 +111,14 @@ public class BookService {
         Optional<Book> book = bookRepository.findById(id);
         if (book.isPresent()) {
             bookRepository.deleteBookById(id);
-            convertToBookDTO(book.get());
+            Long authorBookId = book.get().getAuthor().getId();
+
+            // DELETE AUTHOR
+            Optional<Author> author = authorRepository.findById(authorBookId);
+            author.get().getBooksLaunched().remove(book.get()); // REMOVING BOOK FROM AUTHORS LIST
+            if (author.get().getBooksLaunched().isEmpty()) {
+                authorRepository.deleteById(author.get().getId());
+            }
         }
     }
 
