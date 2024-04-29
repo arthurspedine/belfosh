@@ -1,6 +1,6 @@
 # Spring Web Bookshelf
 
-This project aim to enhance my understanding of Spring Boot (JPA, WEB) and interactions with pure JavaScript, built upon the Google Books API.
+This project aimed to enhance my understanding of Spring Boot (JPA, WEB) and interactions with pure JavaScript, built upon the Google Books API.
 
 ## Technologies
 
