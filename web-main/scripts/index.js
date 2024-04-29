@@ -4,7 +4,8 @@ import deleteData from "./deleteData.js";
 const elements = {
     myshelf: document.querySelector('[data-name="myshelf"]'),
     search: document.querySelector('[data-name="search"]'),
-    selectElement: document.querySelector('[data-author]')
+    selectElement: document.querySelector('[data-author]'),
+    authorShelf: document.querySelector('[data-name="author"]')
 };
 
 elements.search.style.padding = '0'; // DISABLE PADDING TO DONT MOVE SHELF
@@ -136,6 +137,16 @@ elements.myshelf.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-btn')) {
         // get id from <li> father
         const liId = event.target.parentElement.getAttribute('id');
+        console.log(liId);
+        deleteData(`/books/self/${liId}/delete`);
+    }
+});
+
+elements.authorShelf.addEventListener('click', function(event) {
+    if (event.target.classList.contains('delete-btn')) {
+        // get id from <li> father
+        const liId = event.target.parentElement.getAttribute('id');
+        console.log(liId);
         deleteData(`/books/self/${liId}/delete`);
     }
 });
