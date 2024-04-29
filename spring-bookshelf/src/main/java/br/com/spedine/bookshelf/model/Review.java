@@ -13,6 +13,7 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
     private Book book; //ManyToOne
+    @Column(length = 1500)
     private String comment;
     private Double rating;
     private LocalDate datePublished;
