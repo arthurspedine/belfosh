@@ -37,7 +37,8 @@ To run this project, you will need to create the following environment variables
 
 ![Home Page](https://github.com/arthurspedine/spring-web-bookshelf/assets/65985748/e3d65e9d-15eb-409a-b38d-b68d9bb7c0bf)
 ![Book Searched Page](https://github.com/arthurspedine/spring-web-bookshelf/assets/65985748/85e45cae-ba23-4a30-8e32-d06bba492697)
-![Book Details with Review](https://github.com/arthurspedine/spring-web-bookshelf/assets/65985748/83de570c-accc-4a38-9eeb-0bb0bb3138f5)
+![Book Details with Review](https://github.com/arthurspedine/spring-web-bookshelf/assets/65985748/6c56f0e0-ada9-4fb5-8a1f-ab3d7eedac4f)
+
 
 ## Support
 
