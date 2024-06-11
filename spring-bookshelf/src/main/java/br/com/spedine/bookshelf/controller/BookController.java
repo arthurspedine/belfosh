@@ -14,8 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-    @Autowired
-    private BookService service;
+
+    private final BookService service;
+
+    public BookController(BookService service) {
+        this.service = service;
+    }
 
     @GetMapping("/{name}")
     public List<BookJSONDTO> getAllJsonBooks(@PathVariable String name) {

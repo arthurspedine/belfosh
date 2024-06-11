@@ -6,6 +6,7 @@ import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.dto.ReviewDTO;
 import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
+import br.com.spedine.bookshelf.repository.ReviewRepository;
 import br.com.spedine.bookshelf.service.DataConverter;
 import br.com.spedine.bookshelf.service.RequestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class BookService {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     public List<BookJSONDTO> getAllJsonBooksFromName(String name) {
         ItemsData data = dataConverter.getData(RequestAPI.getJsonData(name), ItemsData.class);
@@ -110,6 +114,7 @@ public class BookService {
     public void deleteBookById(Long id) {
         Optional<Book> book = bookRepository.findById(id);
         if (book.isPresent()) {
+            book.get().getUserReview().forEach(r -> reviewRepository.deteleReviewById(r.getId()));
             bookRepository.deleteBookById(id);
             Long authorBookId = book.get().getAuthor().getId();
 
