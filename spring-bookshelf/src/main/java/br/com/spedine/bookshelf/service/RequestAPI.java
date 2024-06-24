@@ -1,5 +1,7 @@
 package br.com.spedine.bookshelf.service;
 
+import br.com.spedine.bookshelf.infra.exception.ValidationException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,6 +27,10 @@ public class RequestAPI {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return response.body();
+        if (response.statusCode() != 400) {
+            return response.body();
+        } else {
+            throw new ValidationException("Google Books API request exception");
+        }
     }
 }
