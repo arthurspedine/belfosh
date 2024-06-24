@@ -1,4 +1,4 @@
-package br.com.spedine.bookshelf.service;
+package br.com.spedine.bookshelf.service.api;
 
 import br.com.spedine.bookshelf.infra.exception.ValidationException;
 
