@@ -23,6 +23,7 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> userReview; // OneToMany
     @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
     private Author author; // ManyToOne
     private String poster_url;
 
