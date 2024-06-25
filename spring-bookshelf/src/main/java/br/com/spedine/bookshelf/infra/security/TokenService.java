@@ -28,7 +28,7 @@ public class TokenService {
                     .withExpiresAt(expirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new ValidationException("JWT Token: Generate token");
+            throw new JWTCreationException("JWT Token: Generate token", e.getCause());
         }
     }
 
@@ -41,7 +41,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException e) {
-            throw new ValidationException("JWT Token: Invalid/Expired! " + e.getLocalizedMessage());
+            throw new JWTVerificationException("JWT Token: Invalid/Expired!");
         }
     }
 

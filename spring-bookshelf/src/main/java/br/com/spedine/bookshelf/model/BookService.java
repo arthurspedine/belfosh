@@ -7,8 +7,8 @@ import br.com.spedine.bookshelf.dto.ReviewDTO;
 import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
 import br.com.spedine.bookshelf.repository.ReviewRepository;
-import br.com.spedine.bookshelf.service.DataConverter;
-import br.com.spedine.bookshelf.service.RequestAPI;
+import br.com.spedine.bookshelf.service.api.DataConverter;
+import br.com.spedine.bookshelf.service.api.RequestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
