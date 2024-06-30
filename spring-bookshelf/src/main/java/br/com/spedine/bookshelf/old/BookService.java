@@ -1,9 +1,14 @@
-package br.com.spedine.bookshelf.model;
+package br.com.spedine.bookshelf.old;
 
-import br.com.spedine.bookshelf.dto.AuthorDTO;
-import br.com.spedine.bookshelf.dto.BookDTO;
+import br.com.spedine.bookshelf.model.Book;
+import br.com.spedine.bookshelf.model.api.ItemsData;
+import br.com.spedine.bookshelf.model.api.VolumeData;
+import br.com.spedine.bookshelf.old.dto.AuthorDTO;
+import br.com.spedine.bookshelf.old.dto.BookDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
-import br.com.spedine.bookshelf.dto.ReviewDTO;
+import br.com.spedine.bookshelf.old.dto.ReviewDTO;
+import br.com.spedine.bookshelf.old.model.Author;
+import br.com.spedine.bookshelf.old.model.Review;
 import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
 import br.com.spedine.bookshelf.repository.ReviewRepository;
@@ -18,18 +23,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
 public class BookService {
 
     DataConverter dataConverter = new DataConverter();
 
-    @Autowired
     private BookRepository bookRepository;
 
-    @Autowired
     private AuthorRepository authorRepository;
 
-    @Autowired
     private ReviewRepository reviewRepository;
 
     public List<BookJSONDTO> getAllJsonBooksFromName(String name) {
@@ -42,7 +43,7 @@ public class BookService {
                         v.volumeInfo().publishedDate() != null &&
                         v.volumeInfo().summary() != null)
                 .map(v -> new BookJSONDTO(
-                        v.id(),
+//                        v.id(),
                         v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
                         v.volumeInfo().summary(), v.volumeInfo().totalPages(),
                         v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail")
@@ -129,7 +130,7 @@ public class BookService {
 
     // OBJECTS
     private BookJSONDTO convertVolumeInfoToBookJsonTDO(VolumeData v) {
-        return new BookJSONDTO(v.id(),
+        return new BookJSONDTO(
                 v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
                 v.volumeInfo().summary(), v.volumeInfo().totalPages(),
                 v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail"));

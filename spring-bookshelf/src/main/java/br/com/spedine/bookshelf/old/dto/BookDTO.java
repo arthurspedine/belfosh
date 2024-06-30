@@ -1,7 +1,4 @@
-package br.com.spedine.bookshelf.dto;
-
-import br.com.spedine.bookshelf.model.Author;
-import br.com.spedine.bookshelf.model.Book;
+package br.com.spedine.bookshelf.old.dto;
 
 public record BookDTO(
         Long id,

@@ -1,5 +1,6 @@
-package br.com.spedine.bookshelf.model;
+package br.com.spedine.bookshelf.old.model;
 
+import br.com.spedine.bookshelf.model.Book;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

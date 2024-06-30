@@ -1,10 +1,9 @@
 package br.com.spedine.bookshelf.model;
 
-import br.com.spedine.bookshelf.dto.BookJSONDTO;
+import br.com.spedine.bookshelf.old.model.Author;
+import br.com.spedine.bookshelf.old.model.Review;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,7 +26,8 @@ public class Book {
     private Author author; // ManyToOne
     private String poster_url;
 
-    public Book() {}
+    public Book() {
+    }
 
     public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, Author author, String poster_url) {
         this.title = title;
@@ -38,6 +38,7 @@ public class Book {
         this.author = author;
         this.poster_url = poster_url;
     }
+
     // JSONDTO
     public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, String poster_url) {
         this.title = title;

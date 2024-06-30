@@ -1,6 +1,6 @@
 package br.com.spedine.bookshelf.repository;
 
-import br.com.spedine.bookshelf.model.Review;
+import br.com.spedine.bookshelf.old.model.Review;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

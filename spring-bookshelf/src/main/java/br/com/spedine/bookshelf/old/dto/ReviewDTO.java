@@ -1,4 +1,4 @@
-package br.com.spedine.bookshelf.dto;
+package br.com.spedine.bookshelf.old.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

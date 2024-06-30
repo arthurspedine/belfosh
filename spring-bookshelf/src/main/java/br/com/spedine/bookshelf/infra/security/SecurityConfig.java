@@ -30,6 +30,7 @@ public class SecurityConfig {
                         req -> {
                             req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                             req.requestMatchers(HttpMethod.POST, "/register").permitAll();
+                            req.requestMatchers(HttpMethod.GET, "/books/{name}").permitAll();
                             req.anyRequest().authenticated();
                         }
                 )

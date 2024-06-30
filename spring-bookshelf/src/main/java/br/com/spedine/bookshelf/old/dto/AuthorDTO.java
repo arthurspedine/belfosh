@@ -1,4 +1,4 @@
-package br.com.spedine.bookshelf.dto;
+package br.com.spedine.bookshelf.old.dto;
 
 public record AuthorDTO(
         Long id,

@@ -3,7 +3,6 @@ package br.com.spedine.bookshelf.dto;
 import br.com.spedine.bookshelf.model.Book;
 
 public record BookJSONDTO(
-        String id,
         String title,
         String publishedDate,
         String publisher,

@@ -1,4 +1,4 @@
-package br.com.spedine.bookshelf.model;
+package br.com.spedine.bookshelf.model.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
