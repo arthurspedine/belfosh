@@ -37,8 +37,16 @@ function createSearchBookList(element, data) {
     const ul = document.createElement('ul');
     ul.className = 'book-list';
     const listHTML = data.map(book => `
-        <li>
-            <a href="/search_details.html?name=${book.title.replace(" ", "%20")}&id=${book.id}">
+        <li 
+            data-title="${book.title}"
+            data-published-date="${book.publishedDate}"
+            data-publisher="${book.publisher}"
+            data-summary="${book.summary}"
+            data-total-pages="${book.totalPages}"
+            data-author="${book.author}"
+            data-poster-url="${book.poster_url}"
+        >
+            <a href="/search_details.html">
                 <img src="${book.poster_url}" alt="${book.title}">
             </a>
         </li>
@@ -175,4 +183,30 @@ function generateBooks() {
             console.error("Error to get shelf data: ", error);
         })
 }
+
+elements.search.addEventListener("click", (e) => {
+    let target = e.target;
+
+    if (target.tagName === 'IMG') {
+        let li = target.closest('li');
+        if (li) {
+            let title = li.getAttribute('data-title');
+            let publishedDate = li.getAttribute('data-published-date');
+            let publisher = li.getAttribute('data-publisher');
+            let summary = li.getAttribute('data-summary');
+            let totalPages = li.getAttribute('data-total-pages');
+            let author = li.getAttribute('data-author');
+            let posterUrl = li.getAttribute('data-poster-url');
+            
+            const jsonData = {
+                "title": title, "publishedDate": publishedDate,
+                "publisher": publisher, "summary": summary,
+                "totalPages": totalPages, "author": author,
+                "posterUrl": posterUrl
+            }
+            sessionStorage.setItem("book_searched", JSON.stringify(jsonData));
+        }
+    }
+})
+
 
