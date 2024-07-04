@@ -1,44 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-:root {
-    --bg-color: #D1E2F0;
-    --header-bg-color: #10567E;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Poppins", sans-serif;
-}
-
-body {
-    height: 100vh;
-    background-color: var(--bg-color);
-}
+@import url("default_config.css");
 
 .hidden {
     display: none;
-}
-
-/* HEADER */
-header {
-    padding: 15px 22px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: var(--header-bg-color);
-    max-height: 70px;
-}
-
-header h1 {
-    position: absolute;
-    top: 10px;
-}
-
-header h1 a {
-    text-decoration: none;
-    color: var(--bg-color);
 }
 
 .shelf_header {
@@ -51,8 +14,9 @@ header h1 a {
 
 form {
     display: flex;
-    gap: 3px;
-    margin: auto;
+    gap: 5px;
+    margin-left: 20px;
+    margin-right: auto;
 }
 
 form #name {
@@ -61,7 +25,14 @@ form #name {
     border: 2px solid black;
     font-size: 1rem;
     padding: 10px;
+    outline: none;
 }
+
+form #name:focus {
+    border-radius: 10px;
+}
+
+
 
 form .btn {
     background-color: var(--header-bg-color);

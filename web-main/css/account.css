@@ -1,0 +1,73 @@
+@import url("default_config.css");
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60%;
+    padding: 20px;
+}
+
+form {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    width: 400px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+form>div {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    position: static;
+    width: 100%;
+}
+
+h2 {
+    font-size: 28px;
+    font-weight: 500;
+    text-align: center;
+}
+
+label {
+    font-size: 1rem;
+    color: var(--header-bg-color);
+    font-weight: 600;
+    position: relative;
+    top: 0.5rem;
+    margin: 0 0 0 7px;
+    padding: 0 3px;
+    background: var(--bg-color);
+    width: fit-content;
+}
+
+input {
+    padding: 11px 10px;
+    font-size: 1rem;
+    border: 2px var(--header-bg-color) solid;
+    border-radius: 5px;
+    background: var(--bg-color);
+    outline: none;
+}
+
+input::placeholder {
+    color: black;
+}
+
+button {
+    margin: 30px auto;
+    width: 100%;
+
+    border-radius: 4px;
+    background-color: #3d405b;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 17px;
+    padding: 16px;
+    transition: all 0.5s;
+    cursor: pointer;
+}

@@ -13,7 +13,7 @@ elements.search.style.padding = '0'; // DISABLE PADDING TO DONT MOVE SHELF
 const params = new URLSearchParams(window.location.search);
 const bookTitle = params.get('name');
 
-function createSearchBookList(element, data) {
+function createSearchBookList(element, data) { // SEARCH API RESULT
     if (data.length == null) {
         return;
     }
@@ -55,7 +55,7 @@ function createSearchBookList(element, data) {
     element.appendChild(ul);
 }
 
-function createSelfBooksList(element, data) {
+function createSelfBooksList(element, data) { // PERSONAL SHELF
 
     const ulExist = element.querySelector('ul');
     if (ulExist) {
@@ -76,6 +76,8 @@ function createSelfBooksList(element, data) {
     element.appendChild(ul);
 }
 
+
+// AUTHORS SELECT
 function getAuthors() {
     const url = "/books/self/author/all";
     getData(url)
@@ -104,8 +106,8 @@ function generateAuthorsOption(element, data) {
     });
 }
 
-const elementsToHide = document.querySelectorAll('.book-list');
-
+const elementsToHide = document.querySelectorAll('.book-list'); 
+// HIDE BOOKS THAT ARENT FROM THAT AUTHOR SELECTED
 elements.selectElement.addEventListener('change', function () {
     const sectionAuthor = document.querySelector('[data-name="author"]');
     const selectedAuthor = elements.selectElement.value;
@@ -140,7 +142,7 @@ elements.selectElement.addEventListener('change', function () {
 
 });
 
-
+// DELETE BOOK FROM SHELF
 elements.myshelf.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-btn')) {
         // get id from <li> father
@@ -150,6 +152,7 @@ elements.myshelf.addEventListener('click', function(event) {
     }
 });
 
+// DELETE BOOK ALSO
 elements.authorShelf.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-btn')) {
         // get id from <li> father
@@ -162,6 +165,7 @@ elements.authorShelf.addEventListener('click', function(event) {
 getAuthors(); // SELECT FROM SECTION MY SHELF
 generateBooks();
 
+// GENERATE ALL BOOKS
 function generateBooks() {
     if (bookTitle != null) {
         const url = `/books/${bookTitle}`;
@@ -208,5 +212,3 @@ elements.search.addEventListener("click", (e) => {
         }
     }
 })
-
-
