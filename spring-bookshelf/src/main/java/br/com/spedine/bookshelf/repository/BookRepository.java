@@ -1,5 +1,6 @@
 package br.com.spedine.bookshelf.repository;
 
+import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.old.model.Author;
 import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.old.model.Review;
@@ -17,4 +18,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Review> findReviewByBookId(Long id);
 
     Optional<Book> findByApiIdContainingIgnoreCase(String title);
+
+    List<Book> findBooksByUsers(User user);
 }

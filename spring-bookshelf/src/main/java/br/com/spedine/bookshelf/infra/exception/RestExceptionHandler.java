@@ -24,8 +24,13 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ExceptionData(e.getMessage()));
     }
 
-    @ExceptionHandler(BookAlreadyInShelf.class)
-    public ResponseEntity<ExceptionData> bookAlreadyInUserShelf(BookAlreadyInShelf e) {
+    @ExceptionHandler(BookAlreadyOnShelf.class)
+    public ResponseEntity<ExceptionData> bookAlreadyInUserShelf(BookAlreadyOnShelf e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionData(e.getMessage()));
+    }
+
+    @ExceptionHandler(BookNotOnUserShelf.class)
+    public ResponseEntity<ExceptionData> bookNotOnUserShelf(BookNotOnUserShelf e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionData(e.getMessage()));
     }
 

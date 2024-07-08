@@ -1,7 +1,8 @@
 package br.com.spedine.bookshelf.service;
 
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
-import br.com.spedine.bookshelf.infra.exception.BookAlreadyInShelf;
+import br.com.spedine.bookshelf.infra.exception.BookAlreadyOnShelf;
+import br.com.spedine.bookshelf.infra.exception.BookNotOnUserShelf;
 import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.model.api.ItemsData;
@@ -13,12 +14,14 @@ import br.com.spedine.bookshelf.repository.BookRepository;
 import br.com.spedine.bookshelf.repository.UserRepository;
 import br.com.spedine.bookshelf.service.api.DataConverter;
 import br.com.spedine.bookshelf.service.api.RequestAPI;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -75,6 +78,23 @@ public class BookService {
         return getBookByApiId(data.api_id()).get();
     }
 
+    public void saveBookIntoUserShelf(Book book, User user) {
+        if (book.getUsers().contains(user)) {
+            throw new BookAlreadyOnShelf("This book is already on your shelf.");
+        }
+        book.getUsers().add(user);
+        user.getBooks().add(book);
+
+        saveBook(book);
+        userRepository.save(user);
+    }
+
+    public List<BookDTO> getAllBooksFromUser(User user) {
+        return convertToBookDTOList(bookRepository.findBooksByUsers(user));
+    }
+
+// ----------------------------------------------------------------------
+
     private void saveBook(Book book) {
         bookRepository.save(book);
     }
@@ -85,6 +105,10 @@ public class BookService {
 
     public Author getAuthorByName(String name) {
         return authorRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public Book getBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("This book does not exist in our data."));
     }
 
     public Optional<Book> getBookByApiId(String id) {
@@ -100,15 +124,20 @@ public class BookService {
         );
     }
 
+    private List<BookDTO> convertToBookDTOList(List<Book> all) {
+        return all.stream()
+                .map(this::convertToDto
+                ).collect(Collectors.toList());
+    }
 
-    public void saveBookIntoUserShelf(Book book, User user) {
-        if (book.getUsers().contains(user)) {
-            throw new BookAlreadyInShelf("This book is already on your shelf.");
-        }
-        book.getUsers().add(user);
-        user.getBooks().add(book);
+    public void deleteBookFromUserShelf(Book book, User user) {
+        if (!book.getUsers().contains(user))
+            throw new BookNotOnUserShelf("This book isn't on your shelf!");
 
-        bookRepository.save(book);
+        book.getUsers().remove(user);
+        user.getBooks().remove(book);
+
+        saveBook(book);
         userRepository.save(user);
     }
 }
