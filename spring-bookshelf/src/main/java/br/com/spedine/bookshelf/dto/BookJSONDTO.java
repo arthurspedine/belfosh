@@ -9,11 +9,14 @@ public record BookJSONDTO(
         String summary,
         Integer totalPages,
         String author,
-        String poster_url
+        String poster_url,
+        String api_id
 ) {
-    public Book getAs(){
-        return new Book( // without author
-                title, publishedDate, publisher, summary,
-                totalPages, poster_url);
+    public Book getAs(BookJSONDTO data) {
+        return new Book(
+                data.title(), data.publishedDate(), data.publisher(),
+                data.summary(), data.totalPages(),
+                data.poster_url(), data.api_id()
+        );
     }
 }

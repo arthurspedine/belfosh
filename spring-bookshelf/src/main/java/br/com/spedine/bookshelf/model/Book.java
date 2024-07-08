@@ -4,6 +4,7 @@ import br.com.spedine.bookshelf.old.model.Author;
 import br.com.spedine.bookshelf.old.model.Review;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Book {
     private Long id;
     @Column(unique = true)
     private String title;
-    private String publishedDate;
+    private LocalDate publishedDate;
     private String publisher;
     @Column(length = 2000)
     private String summary;
@@ -25,13 +26,14 @@ public class Book {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author; // ManyToOne
     private String poster_url;
+    private String apiId;
 
     public Book() {
     }
 
     public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, Author author, String poster_url) {
         this.title = title;
-        this.publishedDate = publishedDate;
+        this.publishedDate = LocalDate.parse(publishedDate);
         this.publisher = publisher;
         this.summary = summary;
         this.totalPages = totalPages;
@@ -40,13 +42,14 @@ public class Book {
     }
 
     // JSONDTO
-    public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, String poster_url) {
+    public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, String poster_url, String apiId) {
         this.title = title;
-        this.publishedDate = publishedDate;
+        this.publishedDate = LocalDate.parse(publishedDate);
         this.publisher = publisher;
         this.summary = summary;
         this.totalPages = totalPages;
         this.poster_url = poster_url;
+        this.apiId = apiId;
     }
 
     public Long getId() {
@@ -57,7 +60,7 @@ public class Book {
         return title;
     }
 
-    public String getPublishedDate() {
+    public LocalDate getPublishedDate() {
         return publishedDate;
     }
 

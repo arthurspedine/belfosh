@@ -42,7 +42,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<AuthResponseDTO> register(@RequestBody @Valid AccountRegisterDTO data) {
+    public ResponseEntity<Void> register(@RequestBody @Valid AccountRegisterDTO data) {
         if (repository.findByLogin(data.email()) != null)
             throw new EmailAlreadyExistsException("An account with this email already exists.");
 
