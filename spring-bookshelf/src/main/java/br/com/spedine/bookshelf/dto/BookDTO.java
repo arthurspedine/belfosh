@@ -1,4 +1,4 @@
-package br.com.spedine.bookshelf.old.dto;
+package br.com.spedine.bookshelf.dto;
 
 import java.time.LocalDate;
 

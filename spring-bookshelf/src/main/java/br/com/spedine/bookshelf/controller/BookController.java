@@ -4,7 +4,7 @@ import br.com.spedine.bookshelf.dto.BookAddedDTO;
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.User;
-import br.com.spedine.bookshelf.old.dto.BookDTO;
+import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.service.BookService;
 import br.com.spedine.bookshelf.service.UserService;
 import jakarta.transaction.Transactional;
@@ -50,7 +50,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAllBooksFromUser(user));
     }
 
-    @DeleteMapping("/del/{book_id}")
+    @DeleteMapping("/delete/{book_id}")
     @Transactional
     public ResponseEntity<Void> deleteBookInUserShelf(
             @PathVariable Long book_id,
@@ -63,5 +63,4 @@ public class BookController {
         return ResponseEntity.ok().build();
 
     }
-
 }

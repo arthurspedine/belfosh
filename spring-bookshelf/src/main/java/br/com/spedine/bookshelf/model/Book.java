@@ -1,11 +1,8 @@
 package br.com.spedine.bookshelf.model;
 
-import br.com.spedine.bookshelf.old.model.Author;
-import br.com.spedine.bookshelf.old.model.Review;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,8 +18,7 @@ public class Book {
     @Column(length = 2000)
     private String summary;
     private Integer totalPages;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Review> userReview; // OneToMany
+
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author; // ManyToOne
@@ -31,6 +27,9 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     private Set<User> users;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews;
 
     public Book() {
     }
@@ -80,10 +79,6 @@ public class Book {
         return totalPages;
     }
 
-    public List<Review> getUserReview() {
-        return userReview;
-    }
-
     public void setAuthor(Author author) {
         this.author = author;
     }
@@ -98,5 +93,9 @@ public class Book {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
     }
 }

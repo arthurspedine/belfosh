@@ -1,6 +1,5 @@
-package br.com.spedine.bookshelf.old.model;
+package br.com.spedine.bookshelf.model;
 
-import br.com.spedine.bookshelf.model.Book;
 import jakarta.persistence.*;
 
 import java.util.List;

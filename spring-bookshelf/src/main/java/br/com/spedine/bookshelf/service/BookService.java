@@ -4,13 +4,15 @@ import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.infra.exception.BookAlreadyOnShelf;
 import br.com.spedine.bookshelf.infra.exception.BookNotOnUserShelf;
 import br.com.spedine.bookshelf.model.Book;
+import br.com.spedine.bookshelf.model.Review;
 import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.model.api.ItemsData;
-import br.com.spedine.bookshelf.old.dto.AuthorDTO;
-import br.com.spedine.bookshelf.old.dto.BookDTO;
-import br.com.spedine.bookshelf.old.model.Author;
+import br.com.spedine.bookshelf.dto.AuthorDTO;
+import br.com.spedine.bookshelf.dto.BookDTO;
+import br.com.spedine.bookshelf.model.Author;
 import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
+import br.com.spedine.bookshelf.repository.ReviewRepository;
 import br.com.spedine.bookshelf.repository.UserRepository;
 import br.com.spedine.bookshelf.service.api.DataConverter;
 import br.com.spedine.bookshelf.service.api.RequestAPI;
@@ -36,6 +38,9 @@ public class BookService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     public List<BookJSONDTO> getAllJsonBooksFromName(String name) {
         ItemsData data = dataConverter.getData(RequestAPI.getJsonData(name), ItemsData.class);
@@ -93,6 +98,27 @@ public class BookService {
         return convertToBookDTOList(bookRepository.findBooksByUsers(user));
     }
 
+    public void deleteBookFromUserShelf(Book book, User user) {
+        if (!book.getUsers().contains(user))
+            throw new BookNotOnUserShelf("This book isn't on your shelf!");
+
+        book.getUsers().remove(user);
+        user.getBooks().remove(book);
+
+        List<Review> bookReviews = book.getReviews().stream()
+                .filter(review -> review.getUser().equals(user))
+                .toList();
+
+        bookReviews.forEach(r -> {
+            book.getReviews().remove(r);
+            user.getReviews().remove(r);
+            reviewRepository.delete(r);
+        });
+
+        saveBook(book);
+        userRepository.save(user);
+    }
+
 // ----------------------------------------------------------------------
 
     private void saveBook(Book book) {
@@ -128,16 +154,5 @@ public class BookService {
         return all.stream()
                 .map(this::convertToDto
                 ).collect(Collectors.toList());
-    }
-
-    public void deleteBookFromUserShelf(Book book, User user) {
-        if (!book.getUsers().contains(user))
-            throw new BookNotOnUserShelf("This book isn't on your shelf!");
-
-        book.getUsers().remove(user);
-        user.getBooks().remove(book);
-
-        saveBook(book);
-        userRepository.save(user);
     }
 }

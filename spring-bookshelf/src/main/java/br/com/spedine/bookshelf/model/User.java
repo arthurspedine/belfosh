@@ -32,6 +32,9 @@ public class User implements UserDetails {
     )
     private Set<Book> books;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews;
+
     public User(String username, String login, String password) {
         this.username = username;
         this.login = login;
@@ -86,5 +89,9 @@ public class User implements UserDetails {
 
     public Set<Book> getBooks() {
         return books;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
     }
 }
