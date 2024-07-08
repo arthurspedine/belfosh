@@ -1,13 +1,16 @@
 package br.com.spedine.bookshelf.service;
 
 import br.com.spedine.bookshelf.dto.BookJSONDTO;
+import br.com.spedine.bookshelf.infra.exception.BookAlreadyInShelf;
 import br.com.spedine.bookshelf.model.Book;
+import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.model.api.ItemsData;
 import br.com.spedine.bookshelf.old.dto.AuthorDTO;
 import br.com.spedine.bookshelf.old.dto.BookDTO;
 import br.com.spedine.bookshelf.old.model.Author;
 import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
+import br.com.spedine.bookshelf.repository.UserRepository;
 import br.com.spedine.bookshelf.service.api.DataConverter;
 import br.com.spedine.bookshelf.service.api.RequestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class BookService {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<BookJSONDTO> getAllJsonBooksFromName(String name) {
         ItemsData data = dataConverter.getData(RequestAPI.getJsonData(name), ItemsData.class);
@@ -95,4 +101,14 @@ public class BookService {
     }
 
 
+    public void saveBookIntoUserShelf(Book book, User user) {
+        if (book.getUsers().contains(user)) {
+            throw new BookAlreadyInShelf("This book is already on your shelf.");
+        }
+        book.getUsers().add(user);
+        user.getBooks().add(book);
+
+        bookRepository.save(book);
+        userRepository.save(user);
+    }
 }

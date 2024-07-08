@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -27,6 +28,9 @@ public class Book {
     private Author author; // ManyToOne
     private String poster_url;
     private String apiId;
+
+    @ManyToMany(mappedBy = "books")
+    private Set<User> users;
 
     public Book() {
     }
@@ -90,5 +94,9 @@ public class Book {
 
     public String getPoster_url() {
         return poster_url;
+    }
+
+    public Set<User> getUsers() {
+        return users;
     }
 }

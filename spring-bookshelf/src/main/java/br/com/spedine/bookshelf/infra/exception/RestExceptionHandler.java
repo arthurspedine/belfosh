@@ -24,6 +24,11 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ExceptionData(e.getMessage()));
     }
 
+    @ExceptionHandler(BookAlreadyInShelf.class)
+    public ResponseEntity<ExceptionData> bookAlreadyInUserShelf(BookAlreadyInShelf e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionData(e.getMessage()));
+    }
+
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ExceptionData> validationException(ValidationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ExceptionData(e.getMessage()));

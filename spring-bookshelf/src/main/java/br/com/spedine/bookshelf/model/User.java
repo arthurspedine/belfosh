@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "users")
 @Entity(name = "Users")
@@ -23,6 +24,14 @@ public class User implements UserDetails {
 
     private String password;
 
+    @ManyToMany
+    @JoinTable(
+            name = "users_books",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books;
+
     public User(String username, String login, String password) {
         this.username = username;
         this.login = login;
@@ -35,6 +44,10 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
@@ -69,5 +82,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
     }
 }
