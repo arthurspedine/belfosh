@@ -60,6 +60,6 @@ public class ReviewController {
         Book book = bookService.getBookById(book_id);
         User user = userService.getUserByLogin(authHeader);
 
-        return ResponseEntity.ok().body(reviewService.getAllReviewsByBookId(book, user));
+        return ResponseEntity.ok(reviewService.getAllReviewsByBookId(book, user));
     }
 }

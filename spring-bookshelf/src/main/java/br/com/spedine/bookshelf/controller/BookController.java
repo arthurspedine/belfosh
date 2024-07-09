@@ -25,7 +25,7 @@ public class BookController {
     @Autowired
     private UserService userService;
 
-    //  WHEN USER HAS Bearer Token expired or invalid, it returns 403 (user should remove the token or login again
+    //  WHEN USER HAS Bearer Token expired or invalid, it returns 403 (user should remove the token or login again)
     @GetMapping("/{name}")
     public ResponseEntity<List<BookJSONDTO>> getBooksFromGoogleBooks(@PathVariable String name) {
         return ResponseEntity.ok(bookService.getAllJsonBooksFromName(name));
