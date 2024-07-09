@@ -31,6 +31,7 @@ public class SecurityConfig {
                             req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                             req.requestMatchers(HttpMethod.POST, "/register").permitAll();
                             req.requestMatchers(HttpMethod.GET, "/books/{name}").permitAll();
+                            req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                             req.anyRequest().authenticated();
                         }
                 )

@@ -7,6 +7,7 @@ import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.service.BookService;
 import br.com.spedine.bookshelf.service.ReviewService;
 import br.com.spedine.bookshelf.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")
+@SecurityRequirement(name = "bearer-key")
 public class ReviewController {
 
     @Autowired

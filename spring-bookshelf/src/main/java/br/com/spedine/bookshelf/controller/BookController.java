@@ -7,6 +7,7 @@ import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.service.BookService;
 import br.com.spedine.bookshelf.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +32,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAllJsonBooksFromName(name));
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<BookAddedDTO> addBookInUserShelf(
@@ -44,12 +46,14 @@ public class BookController {
         return ResponseEntity.ok(new BookAddedDTO(user.getId(), book.getId()));
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @GetMapping("/all")
     public ResponseEntity<List<BookDTO>> getAllBooksFromShelf(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         User user = userService.getUserByLogin(authHeader);
         return ResponseEntity.ok(bookService.getAllBooksFromUser(user));
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @DeleteMapping("/delete/{book_id}")
     @Transactional
     public ResponseEntity<Void> deleteBookInUserShelf(
