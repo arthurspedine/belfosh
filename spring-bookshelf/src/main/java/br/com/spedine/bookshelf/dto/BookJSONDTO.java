@@ -1,6 +1,7 @@
 package br.com.spedine.bookshelf.dto;
 
 import br.com.spedine.bookshelf.model.Book;
+import br.com.spedine.bookshelf.model.api.VolumeData;
 
 public record BookJSONDTO(
         String title,
@@ -18,5 +19,12 @@ public record BookJSONDTO(
                 data.summary(), data.totalPages(),
                 data.poster_url(), data.api_id()
         );
+    }
+
+    public BookJSONDTO(VolumeData v) {
+        this(v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
+                v.volumeInfo().summary(), v.volumeInfo().totalPages(),
+                v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail"),
+                v.id());
     }
 }

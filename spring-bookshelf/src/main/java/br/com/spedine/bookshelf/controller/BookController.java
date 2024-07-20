@@ -36,10 +36,10 @@ public class BookController {
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<BookAddedDTO> addBookInUserShelf(
-            @RequestBody BookJSONDTO data,
+            @RequestParam String book_id,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
-        Book book = bookService.getBookFromDatabase(data);
+        Book book = bookService.getBookFromDatabase(book_id);
         User user = userService.getUserByLogin(authHeader);
         bookService.saveBookIntoUserShelf(book, user);
 

@@ -10,6 +10,7 @@ import br.com.spedine.bookshelf.model.api.ItemsData;
 import br.com.spedine.bookshelf.dto.AuthorDTO;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.model.Author;
+import br.com.spedine.bookshelf.model.api.VolumeData;
 import br.com.spedine.bookshelf.repository.AuthorRepository;
 import br.com.spedine.bookshelf.repository.BookRepository;
 import br.com.spedine.bookshelf.repository.ReviewRepository;
@@ -54,33 +55,31 @@ public class BookService {
                         v.volumeInfo().title() != null &&
                         v.volumeInfo().publisher() != null &&
                         v.volumeInfo().totalPages() != null)
-                .map(v -> new BookJSONDTO(
-                        v.volumeInfo().title(), v.volumeInfo().publishedDate(), v.volumeInfo().publisher(),
-                        v.volumeInfo().summary(), v.volumeInfo().totalPages(),
-                        v.volumeInfo().authors().get(0), v.volumeInfo().imageLinks().get("thumbnail"),
-                        v.id()
-                )).toList();
+                .map(BookJSONDTO::new).toList();
     }
 
-    public void addBookIntoDatabase(BookJSONDTO data) {
-        Author author = getAuthorByName(data.author());
+    public Book addBookIntoDatabase(String book_id) {
+        VolumeData volume = dataConverter.getData(RequestAPI.getBookById(book_id), VolumeData.class);
+        BookJSONDTO book_data = new BookJSONDTO(volume);
+        Author author = getAuthorByName(book_data.author());
         if (author == null) {
             author = new Author();
-            author.setName(data.author());
+            author.setName(book_data.author());
             author.setBooksLaunched(new ArrayList<>());
             saveAuthor(author);
         }
-        Book new_book = data.getAs(data);
+
+        Book new_book = book_data.getAs(book_data);
         new_book.setAuthor(author);
         author.getBooksLaunched().add(new_book);
         saveBook(new_book);
+        return new_book;
     }
 
-    public Book getBookFromDatabase(BookJSONDTO data) {
-        if (getBookByApiId(data.api_id()).isEmpty())
-            addBookIntoDatabase(data);
+    public Book getBookFromDatabase(String book_api_id) {
+        Optional<Book> book_db = getBookByApiId(book_api_id);
 
-        return getBookByApiId(data.api_id()).get();
+        return book_db.orElseGet(() -> addBookIntoDatabase(book_api_id));
     }
 
     public void saveBookIntoUserShelf(Book book, User user) {
@@ -146,7 +145,7 @@ public class BookService {
                 book.getId(), book.getTitle(), book.getPublishedDate(),
                 book.getPublisher(), book.getSummary(), book.getTotalPages(),
                 new AuthorDTO(book.getAuthor().getId(), book.getAuthor().getName()),
-                book.getPoster_url()
+                book.getPosterUrl()
         );
     }
 

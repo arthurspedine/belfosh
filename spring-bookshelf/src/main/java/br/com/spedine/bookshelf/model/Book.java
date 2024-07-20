@@ -3,6 +3,7 @@ package br.com.spedine.bookshelf.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,25 +12,37 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+
+    @JoinColumn(nullable = false)
     private String title;
+
+    @JoinColumn(nullable = false)
     private LocalDate publishedDate;
+
+    @JoinColumn(nullable = false)
     private String publisher;
+
     @Column(length = 2000)
     private String summary;
+
+    @JoinColumn(nullable = false)
     private Integer totalPages;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author; // ManyToOne
-    private String poster_url;
+
+    @Column(name = "poster_url", nullable = false)
+    private String posterUrl;
+
+    @Column(name = "api_id", nullable = false)
     private String apiId;
 
     @ManyToMany(mappedBy = "books")
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
 
     public Book() {
     }
@@ -41,7 +54,7 @@ public class Book {
         this.summary = summary;
         this.totalPages = totalPages;
         this.author = author;
-        this.poster_url = poster_url;
+        this.posterUrl = poster_url;
     }
 
     // JSONDTO
@@ -51,7 +64,7 @@ public class Book {
         this.publisher = publisher;
         this.summary = summary;
         this.totalPages = totalPages;
-        this.poster_url = poster_url;
+        this.posterUrl = poster_url;
         this.apiId = apiId;
     }
 
@@ -87,8 +100,12 @@ public class Book {
         return author;
     }
 
-    public String getPoster_url() {
-        return poster_url;
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public String getApiId() {
+        return apiId;
     }
 
     public Set<User> getUsers() {
