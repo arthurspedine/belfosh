@@ -33,7 +33,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid AccountLoginDTO data) {
-        var user = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        var user = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = manager.authenticate(user);
         String jwtToken = service.genToken((User) auth.getPrincipal());
 
