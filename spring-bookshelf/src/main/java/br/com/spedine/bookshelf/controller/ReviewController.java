@@ -42,11 +42,11 @@ public class ReviewController {
         return ResponseEntity.status(201).build();
     }
 
-    @DeleteMapping("/delete/{book_id}/{review_id}")
+    @DeleteMapping("/delete")
     @Transactional
     public ResponseEntity<Void> deleteReview(
-            @PathVariable Long book_id,
-            @PathVariable Long review_id,
+            @RequestParam Long book_id,
+            @RequestParam Long review_id,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
         Book book = bookService.getBookById(book_id);
@@ -55,9 +55,9 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{book_id}")
+    @GetMapping
     public ResponseEntity<List<ReviewDTO>> getAllReviewsByBookId(
-            @PathVariable Long book_id,
+            @RequestParam Long book_id,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         Book book = bookService.getBookById(book_id);
         User user = userService.getUserByLogin(authHeader);

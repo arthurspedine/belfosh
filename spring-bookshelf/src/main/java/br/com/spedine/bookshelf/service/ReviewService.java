@@ -3,6 +3,7 @@ package br.com.spedine.bookshelf.service;
 import br.com.spedine.bookshelf.dto.CreateReviewDTO;
 import br.com.spedine.bookshelf.dto.ReviewDTO;
 import br.com.spedine.bookshelf.infra.exception.BookNotOnUserShelf;
+import br.com.spedine.bookshelf.infra.exception.ValidationException;
 import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.Review;
 import br.com.spedine.bookshelf.model.User;
@@ -35,15 +36,18 @@ public class ReviewService {
     }
 
     public void deleteReview(Book book, User user, Long id) {
+        System.out.println(user.getUsername() + "| Book: " + book.getTitle());
         if (!book.getUsers().contains(user))
             throw new BookNotOnUserShelf("This book isn't on your shelf!");
         Optional<Review> review = reviewRepository.findById(id);
         if (review.isPresent()) {
-            if (!book.getReviews().contains(review.get()))
-                throw new EntityNotFoundException("Couldn't find any review about this book");
-            book.getReviews().remove(review.get());
-            user.getReviews().remove(review.get());
-            reviewRepository.delete(review.get());
+            if (review.get().getUser() == user && review.get().getBook() == book) {
+                book.getReviews().remove(review.get());
+                user.getReviews().remove(review.get());
+                reviewRepository.delete(review.get());
+            } else {
+                throw new ValidationException("This review is from another user!");
+            }
         } else {
             throw new EntityNotFoundException("There is no review with this id");
         }

@@ -54,10 +54,10 @@ public class BookController {
     }
 
     @SecurityRequirement(name = "bearer-key")
-    @DeleteMapping("/delete/{book_id}")
+    @DeleteMapping("/delete")
     @Transactional
     public ResponseEntity<Void> deleteBookInUserShelf(
-            @PathVariable Long book_id,
+            @RequestParam Long book_id,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
         Book book = bookService.getBookById(book_id);
