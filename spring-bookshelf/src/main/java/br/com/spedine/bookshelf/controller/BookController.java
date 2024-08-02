@@ -47,7 +47,7 @@ public class BookController {
     }
 
     @SecurityRequirement(name = "bearer-key")
-    @GetMapping("/all")
+    @GetMapping("/user/all")
     public ResponseEntity<List<BookDTO>> getAllBooksFromShelf(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         User user = userService.getUserByLogin(authHeader);
         return ResponseEntity.ok(bookService.getAllBooksFromUser(user));
