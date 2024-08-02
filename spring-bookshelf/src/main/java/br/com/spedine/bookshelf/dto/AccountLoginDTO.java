@@ -7,7 +7,7 @@ public record AccountLoginDTO(
 
         @NotBlank
         @Email
-        String login,
+        String email,
         @NotBlank
         String password
 ) {
