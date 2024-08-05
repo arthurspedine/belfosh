@@ -9,9 +9,9 @@ import java.util.Set;
 @Entity
 @Table(name = "books")
 public class Book {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @JoinColumn(nullable = false)
     private String title;
@@ -35,9 +35,6 @@ public class Book {
     @Column(name = "poster_url", nullable = false)
     private String posterUrl;
 
-    @Column(name = "api_id", nullable = false)
-    private String apiId;
-
     @ManyToMany(mappedBy = "books")
     private Set<User> users = new HashSet<>();
 
@@ -47,28 +44,27 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, Author author, String poster_url) {
+//    public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, Author author, String poster_url) {
+//        this.title = title;
+//        this.publishedDate = LocalDate.parse(publishedDate);
+//        this.publisher = publisher;
+//        this.summary = summary;
+//        this.totalPages = totalPages;
+//        this.author = author;
+//        this.posterUrl = poster_url;
+//    }
+
+    public Book(String id, String title, LocalDate publishedDate, String publisher, String summary, Integer totalPages, String poster_url) {
+        this.id = id;
         this.title = title;
-        this.publishedDate = LocalDate.parse(publishedDate);
+        this.publishedDate = publishedDate;
         this.publisher = publisher;
         this.summary = summary;
         this.totalPages = totalPages;
-        this.author = author;
         this.posterUrl = poster_url;
     }
 
-    // JSONDTO
-    public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, String poster_url, String apiId) {
-        this.title = title;
-        this.publishedDate = LocalDate.parse(publishedDate);
-        this.publisher = publisher;
-        this.summary = summary;
-        this.totalPages = totalPages;
-        this.posterUrl = poster_url;
-        this.apiId = apiId;
-    }
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -104,10 +100,6 @@ public class Book {
         return posterUrl;
     }
 
-    public String getApiId() {
-        return apiId;
-    }
-
     public Set<User> getUsers() {
         return users;
     }
@@ -115,4 +107,9 @@ public class Book {
     public Set<Review> getReviews() {
         return reviews;
     }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
+
 }

@@ -2,6 +2,7 @@ package br.com.spedine.bookshelf.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +14,7 @@ public class Author {
     @Column(unique = true)
     private String name;
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Book> booksLaunched; // OneToMany
+    private List<Book> booksLaunched = new ArrayList<>(); // OneToMany
 
     public Long getId() {
         return id;

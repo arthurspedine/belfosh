@@ -36,7 +36,7 @@ public class ReviewService {
     }
 
     public void deleteReview(Book book, User user, Long id) {
-        System.out.println(user.getUsername() + "| Book: " + book.getTitle());
+        System.out.println(user.getUsername() + " | Book: " + book.getTitle());
         if (!book.getUsers().contains(user))
             throw new BookNotOnUserShelf("This book isn't on your shelf!");
         Optional<Review> review = reviewRepository.findById(id);
@@ -53,15 +53,15 @@ public class ReviewService {
         }
     }
 
-    public List<ReviewDTO> getAllReviewsByBookId(Book book, User user) {
-        if (!book.getUsers().contains(user))
-            throw new BookNotOnUserShelf("This book isn't on your shelf!");
-        List<Review> reviews = book.getReviews().stream()
-                .filter(review -> review.getUser().equals(user))
-                .toList();
-        return reviews.stream().map(r -> new ReviewDTO(
-                r.getId(), r.getDescription(), r.getRating(),
-                r.getReviewDate(), r.getBook().getId()))
-                .toList();
-    }
+//    public List<ReviewDTO> getAllReviewsByBookId(Book book, User user) {
+//        if (!book.getUsers().contains(user))
+//            throw new BookNotOnUserShelf("This book isn't on your shelf!");
+//        List<Review> reviews = book.getReviews().stream()
+//                .filter(review -> review.getUser().equals(user))
+//                .toList();
+//        return reviews.stream().map(r -> new ReviewDTO(
+//                r.getId(), r.getBook().getId(), r.getDescription(), r.getRating(),
+//                r.getReviewDate()))
+//                .toList();
+//    }
 }

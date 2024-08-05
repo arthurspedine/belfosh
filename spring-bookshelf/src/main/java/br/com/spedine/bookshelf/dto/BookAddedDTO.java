@@ -2,6 +2,6 @@ package br.com.spedine.bookshelf.dto;
 
 public record BookAddedDTO(
         Long user_id,
-        Long book_id
+        String book_id
 ) {
 }

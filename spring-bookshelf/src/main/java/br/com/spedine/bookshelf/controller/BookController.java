@@ -1,7 +1,6 @@
 package br.com.spedine.bookshelf.controller;
 
 import br.com.spedine.bookshelf.dto.BookAddedDTO;
-import br.com.spedine.bookshelf.dto.BookJSONDTO;
 import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.dto.BookDTO;
@@ -27,9 +26,14 @@ public class BookController {
     private UserService userService;
 
     //  WHEN USER HAS Bearer Token expired or invalid, it returns 403 (user should remove the token or login again)
-    @GetMapping("/{name}")
-    public ResponseEntity<List<BookJSONDTO>> getBooksFromGoogleBooks(@PathVariable String name) {
-        return ResponseEntity.ok(bookService.getAllJsonBooksFromName(name));
+    @GetMapping("/search/all") // /search/all?name=...
+    public ResponseEntity<List<BookDTO>> getBooksFromGoogleBooks(@RequestParam String name) {
+        return ResponseEntity.ok(bookService.getAllBooksFromSearch(name));
+    }
+
+    @GetMapping("/search") // /search?id=...
+    public ResponseEntity<BookDTO> getSearchedBookById(@RequestParam String id) {
+        return ResponseEntity.ok(bookService.getBookDataById(id));
     }
 
     @SecurityRequirement(name = "bearer-key")
@@ -57,7 +61,7 @@ public class BookController {
     @DeleteMapping("/delete")
     @Transactional
     public ResponseEntity<Void> deleteBookInUserShelf(
-            @RequestParam Long book_id,
+            @RequestParam String book_id,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
         Book book = bookService.getBookById(book_id);

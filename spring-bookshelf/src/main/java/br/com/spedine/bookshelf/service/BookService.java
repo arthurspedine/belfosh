@@ -1,13 +1,12 @@
 package br.com.spedine.bookshelf.service;
 
-import br.com.spedine.bookshelf.dto.BookJSONDTO;
+import br.com.spedine.bookshelf.dto.ReviewDTO;
 import br.com.spedine.bookshelf.infra.exception.BookAlreadyOnShelf;
 import br.com.spedine.bookshelf.infra.exception.BookNotOnUserShelf;
 import br.com.spedine.bookshelf.model.Book;
 import br.com.spedine.bookshelf.model.Review;
 import br.com.spedine.bookshelf.model.User;
 import br.com.spedine.bookshelf.model.api.ItemsData;
-import br.com.spedine.bookshelf.dto.AuthorDTO;
 import br.com.spedine.bookshelf.dto.BookDTO;
 import br.com.spedine.bookshelf.model.Author;
 import br.com.spedine.bookshelf.model.api.VolumeData;
@@ -21,9 +20,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +40,7 @@ public class BookService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public List<BookJSONDTO> getAllJsonBooksFromName(String name) {
+    public List<BookDTO> getAllBooksFromSearch(String name) {
         ItemsData data = dataConverter.getData(RequestAPI.getJsonData(name), ItemsData.class);
         return data.items().stream()
                 .filter(v -> v != null &&
@@ -55,17 +52,20 @@ public class BookService {
                         v.volumeInfo().title() != null &&
                         v.volumeInfo().publisher() != null &&
                         v.volumeInfo().totalPages() != null)
-                .map(BookJSONDTO::new).toList();
+                .map(BookDTO::new).toList();
     }
 
-    public Book addBookIntoDatabase(String book_id) {
-        VolumeData volume = dataConverter.getData(RequestAPI.getBookById(book_id), VolumeData.class);
-        BookJSONDTO book_data = new BookJSONDTO(volume);
+    public BookDTO getBookDataById(String id) {
+        VolumeData volume = dataConverter.getData(RequestAPI.getBookById(id), VolumeData.class);
+        return new BookDTO(volume);
+    }
+
+    public Book addBookIntoDatabase(String id) {
+        BookDTO book_data = getBookDataById(id);
         Author author = getAuthorByName(book_data.author());
         if (author == null) {
             author = new Author();
             author.setName(book_data.author());
-            author.setBooksLaunched(new ArrayList<>());
             saveAuthor(author);
         }
 
@@ -93,8 +93,24 @@ public class BookService {
         userRepository.save(user);
     }
 
-    public List<BookDTO> getAllBooksFromUser(User user) {
-        return convertToBookDTOList(bookRepository.findBooksByUsers(user));
+    public List<BookDTO> getAllBooksFromUser(User user) {        List<Book> books = bookRepository.findBooksByUsers(user);
+        List<Book> filteredBooks = books.stream()
+                .map(book -> {
+
+                    Set<Review> reviews = book.getReviews().stream()
+                            .filter(review -> review.getUser().equals(user))
+                            .collect(Collectors.toSet());
+
+                    Book filteredBook = new Book(
+                            book.getId(), book.getTitle(), book.getPublishedDate(),
+                            book.getPublisher(), book.getSummary(), book.getTotalPages(), book.getPosterUrl());
+                    filteredBook.setReviews(reviews);
+                    filteredBook.setAuthor(book.getAuthor());
+
+                    return filteredBook;
+                })
+                .toList();
+        return convertToBookDTOList(filteredBooks);
     }
 
     public void deleteBookFromUserShelf(Book book, User user) {
@@ -132,20 +148,25 @@ public class BookService {
         return authorRepository.findByNameContainingIgnoreCase(name);
     }
 
-    public Book getBookById(Long bookId) {
+    public Book getBookById(String bookId) {
         return bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("This book does not exist in our data."));
     }
 
     public Optional<Book> getBookByApiId(String id) {
-        return bookRepository.findByApiIdContainingIgnoreCase(id);
+        return bookRepository.findByIdContainingIgnoreCase(id);
     }
 
     private BookDTO convertToDto(Book book) {
+        if (!book.getReviews().isEmpty())
+            return new BookDTO(
+                    book.getId(), book.getTitle(), book.getPublishedDate(),
+                    book.getPublisher(), book.getSummary(), book.getTotalPages(),
+                    book.getAuthor().getName(), book.getPosterUrl(), book.getReviews().stream().map(ReviewDTO::new).toList()
+            );
         return new BookDTO(
                 book.getId(), book.getTitle(), book.getPublishedDate(),
                 book.getPublisher(), book.getSummary(), book.getTotalPages(),
-                new AuthorDTO(book.getAuthor().getId(), book.getAuthor().getName()),
-                book.getPosterUrl()
+                book.getAuthor().getName(), book.getPosterUrl(), new ArrayList<>()
         );
     }
 

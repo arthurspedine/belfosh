@@ -45,7 +45,7 @@ public class ReviewController {
     @DeleteMapping("/delete")
     @Transactional
     public ResponseEntity<Void> deleteReview(
-            @RequestParam Long book_id,
+            @RequestParam String book_id,
             @RequestParam Long review_id,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
@@ -53,15 +53,5 @@ public class ReviewController {
         User user = userService.getUserByLogin(authHeader);
         reviewService.deleteReview(book, user, review_id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ReviewDTO>> getAllReviewsByBookId(
-            @RequestParam Long book_id,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
-        Book book = bookService.getBookById(book_id);
-        User user = userService.getUserByLogin(authHeader);
-
-        return ResponseEntity.ok(reviewService.getAllReviewsByBookId(book, user));
     }
 }
