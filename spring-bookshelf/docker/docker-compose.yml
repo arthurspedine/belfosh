@@ -1,18 +1,11 @@
-version: '3.8'
-
+name: 'belfosh-server'
+version: '3.9'
 services:
   postgres:
-    image: postgres
+    image: bitnami/postgresql:16.4.0
+    ports:
+      - '5433:5432'
     environment:
-      POSTGRES_DB: spring_bookshelf
+      POSTGRES_DB: belfosh_db
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
-
-# docker-compose up -d
