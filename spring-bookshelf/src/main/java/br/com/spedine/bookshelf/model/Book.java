@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Books")
 @Table(name = "books")
 public class Book {
 
@@ -22,7 +22,7 @@ public class Book {
     @JoinColumn(nullable = false)
     private String publisher;
 
-    @Column(length = 2000)
+    @Column(length = 3000)
     private String summary;
 
     @JoinColumn(nullable = false)
@@ -43,16 +43,6 @@ public class Book {
 
     public Book() {
     }
-
-//    public Book(String title, String publishedDate, String publisher, String summary, Integer totalPages, Author author, String poster_url) {
-//        this.title = title;
-//        this.publishedDate = LocalDate.parse(publishedDate);
-//        this.publisher = publisher;
-//        this.summary = summary;
-//        this.totalPages = totalPages;
-//        this.author = author;
-//        this.posterUrl = poster_url;
-//    }
 
     public Book(String id, String title, LocalDate publishedDate, String publisher, String summary, Integer totalPages, String poster_url) {
         this.id = id;

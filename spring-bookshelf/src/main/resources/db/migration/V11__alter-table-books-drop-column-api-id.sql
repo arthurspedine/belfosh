@@ -1,1 +1,0 @@
-ALTER TABLE books DROP COLUMN api_id;

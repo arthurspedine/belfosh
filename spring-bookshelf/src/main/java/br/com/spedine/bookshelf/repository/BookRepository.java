@@ -12,6 +12,13 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
     Optional<Book> findByIdContainingIgnoreCase(String title);
 
+    @Query("""
+            SELECT b 
+            FROM Users u 
+            JOIN u.books b 
+            LEFT JOIN b.reviews r 
+            WHERE u = :user
+            """)
     List<Book> findBooksByUsers(User user);
 
 }

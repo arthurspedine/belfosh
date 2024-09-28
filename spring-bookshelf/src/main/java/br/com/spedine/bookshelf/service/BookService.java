@@ -72,7 +72,7 @@ public class BookService {
         Book new_book = book_data.getAs(book_data);
         new_book.setAuthor(author);
         author.getBooksLaunched().add(new_book);
-        saveBook(new_book);
+        // don't save right now, save after user add it to shelf
         return new_book;
     }
 
@@ -93,7 +93,8 @@ public class BookService {
         userRepository.save(user);
     }
 
-    public List<BookDTO> getAllBooksFromUser(User user) {        List<Book> books = bookRepository.findBooksByUsers(user);
+    public List<BookDTO> getAllBooksFromUser(User user) {
+        List<Book> books = bookRepository.findBooksByUsers(user);
         List<Book> filteredBooks = books.stream()
                 .map(book -> {
 
